@@ -182,7 +182,7 @@ All 179 rules across 14 categories. Rules link to detailed examples in `../rules
 - [`proj-lib-main-split`](../rules/proj-lib-main-split.md) - Keep `main.rs` minimal, logic in `lib.rs`
 - [`proj-mod-by-feature`](../rules/proj-mod-by-feature.md) - Organize modules by feature, not type
 - [`proj-flat-small`](../rules/proj-flat-small.md) - Keep small projects flat
-- [`proj-mod-rs-dir`](../rules/proj-mod-rs-dir.md) - Use `mod.rs` for multi-file modules
+- [`proj-mod-rs-dir`](../rules/proj-mod-rs-dir.md) - Prefer `module.rs` over `mod.rs` for multi-file modules
 - [`proj-pub-crate-internal`](../rules/proj-pub-crate-internal.md) - Use `pub(crate)` for internal APIs
 - [`proj-pub-super-parent`](../rules/proj-pub-super-parent.md) - Use `pub(super)` for parent-only visibility
 - [`proj-pub-use-reexport`](../rules/proj-pub-use-reexport.md) - Use `pub use` for clean public API
