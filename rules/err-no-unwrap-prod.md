@@ -101,9 +101,8 @@ expect_used = "warn"       # Also warn on expect() (stricter)
 
 ```rust
 // Allow in specific places where it's justified
-#[allow(clippy::unwrap_used)]
+#[expect(clippy::unwrap_used, reason = "Some(5) is always Some")]
 fn definitely_safe() {
-    // Unwrap is safe here because...
     let x = Some(5).unwrap();
 }
 ```

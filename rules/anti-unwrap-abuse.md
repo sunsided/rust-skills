@@ -132,7 +132,7 @@ let file = File::open(path)
 #![warn(clippy::expect_used)]  // Stricter
 
 // Or per-function:
-#[allow(clippy::unwrap_used)]
+#[expect(clippy::unwrap_used, reason = "test-only code")]
 fn tests_only() { }
 ```
 

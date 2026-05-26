@@ -106,7 +106,7 @@ else {  // Weird formatting, might be a mistake
 Rarely. If you need to suppress, document why:
 
 ```rust
-#[allow(clippy::suspicious_arithmetic_impl)]
+#[expect(clippy::suspicious_arithmetic_impl, reason = "custom matrix multiplication uses + for reduction")]
 impl Mul for Matrix {
     // Custom matrix multiplication using + for reduction step
     fn mul(self, rhs: Self) -> Self::Output {

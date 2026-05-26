@@ -12,7 +12,7 @@ Cargo.toml metadata appears on crates.io, in search results, and helps users eva
 [package]
 name = "my-awesome-crate"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 # ...
@@ -24,8 +24,8 @@ edition = "2021"
 [package]
 name = "my-awesome-crate"
 version = "0.1.0"
-edition = "2021"
-rust-version = "1.70"
+edition = "2024"
+rust-version = "1.95"
 
 # Required for crates.io
 description = "A fast, ergonomic HTTP client for Rust"

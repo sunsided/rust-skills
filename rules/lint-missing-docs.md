@@ -96,7 +96,7 @@ pub mod api {
     /// Documented struct.
     pub struct Config { }
     
-    #[allow(missing_docs)]
+    #[expect(missing_docs, reason = "internal API")]
     pub mod internal {
         // Internal API, docs not required
         pub struct Helper { }

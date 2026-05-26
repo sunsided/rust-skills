@@ -97,7 +97,7 @@ wildcard_imports = "warn"
 #![allow(clippy::module_name_repetitions)]
 
 // Or for specific items
-#[allow(clippy::too_many_arguments)]
+#[expect(clippy::too_many_arguments, reason = "public API contract, can't break callers")]
 fn complex_function(/* many args */) { }
 ```
 

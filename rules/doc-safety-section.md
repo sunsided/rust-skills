@@ -14,12 +14,12 @@ This is not optional—it's a requirement for sound unsafe code.
 /// Reads a value from a raw pointer.
 pub unsafe fn read_ptr<T>(ptr: *const T) -> T {
     // What guarantees must the caller provide? Unknown!
-    ptr.read()
+    unsafe { ptr.read() }
 }
 
 /// Creates a string from raw parts.
 pub unsafe fn string_from_raw(ptr: *mut u8, len: usize, cap: usize) -> String {
-    String::from_raw_parts(ptr, len, cap)
+    unsafe { String::from_raw_parts(ptr, len, cap) }
 }
 ```
 
@@ -36,7 +36,8 @@ pub unsafe fn string_from_raw(ptr: *mut u8, len: usize, cap: usize) -> String {
 /// - `ptr` points to a properly initialized value of type `T`
 /// - The memory referenced by `ptr` is not mutated during this call
 pub unsafe fn read_ptr<T>(ptr: *const T) -> T {
-    ptr.read()
+    // SAFETY: Caller guarantees ptr is valid, aligned, and initialized.
+    unsafe { ptr.read() }
 }
 
 /// Creates a `String` from raw parts.
@@ -53,7 +54,8 @@ pub unsafe fn read_ptr<T>(ptr: *const T) -> T {
 /// Violating these requirements leads to undefined behavior including
 /// memory corruption, use-after-free, or invalid UTF-8 in strings.
 pub unsafe fn string_from_raw(ptr: *mut u8, len: usize, cap: usize) -> String {
-    String::from_raw_parts(ptr, len, cap)
+    // SAFETY: Caller guarantees all invariants above.
+    unsafe { String::from_raw_parts(ptr, len, cap) }
 }
 ```
 

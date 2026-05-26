@@ -77,7 +77,7 @@ all = "warn"
 [package]
 name = "my-app-core"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 # Inherit from workspace

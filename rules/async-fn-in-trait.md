@@ -51,7 +51,7 @@ without help. Two options:
 use std::future::Future;
 
 trait Fetcher: Send + Sync {
-    fn fetch(&self, url: &str) -> impl Future<Output = Result<Bytes, Error>> + Send + '_;
+    fn fetch(&self, url: &str) -> impl Future<Output = Result<Bytes, Error>> + Send;
 }
 
 // Box<dyn Fetcher> now works

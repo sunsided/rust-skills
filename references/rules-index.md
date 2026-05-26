@@ -1,6 +1,6 @@
 # Full Rules Index
 
-All 181 rules across 14 categories. Rules link to detailed examples in `../rules/`.
+All 182 rules across 14 categories. Rules link to detailed examples in `../rules/`.
 
 ## 1. Ownership & Borrowing (CRITICAL) — `own-`
 
@@ -206,6 +206,7 @@ All 181 rules across 14 categories. Rules link to detailed examples in `../rules
 - [`lint-cargo-metadata`](../rules/lint-cargo-metadata.md) - `#![warn(clippy::cargo)]` for published crates
 - [`lint-rustfmt-check`](../rules/lint-rustfmt-check.md) - Run `cargo fmt --check` in CI
 - [`lint-workspace-lints`](../rules/lint-workspace-lints.md) - Configure lints at workspace level
+- [`lint-expect-over-allow`](../rules/lint-expect-over-allow.md) - Prefer `#[expect(lint)]` over `#[allow(lint)]` to catch stale suppressions
 
 ## 14. Anti-patterns (REFERENCE) — `anti-`
 

@@ -62,10 +62,12 @@ When reviewing or generating code, scan for these patterns immediately - each is
 | `collect()` then iterate again | `clippy::needless_collect` | `perf-collect-once` | Chain iterators, skip intermediate collect |
 | `#[async_trait]` on non-dyn trait | - | `async-fn-in-trait` | Use native `async fn` in trait (Rust 1.75+) |
 | `lazy_static! { ... }` | - | `name-consts-screaming` | Use `std::sync::LazyLock` (Rust 1.80+) |
+| `#[allow(lint)]` in production code | `unfulfilled_lint_expectations` | `lint-expect-over-allow` | Use `#[expect(lint, reason = "...")]` (Rust 1.81+) |
+| unsafe op in `unsafe fn` without inner block | `unsafe_op_in_unsafe_fn` | `doc-safety-section` | Wrap with explicit `unsafe {}` (required in 2024 edition) |
 
 ## Category Reference
 
-Read `references/rules-index.md` for the full listing of all 181 rules with links to detailed examples.
+Read `references/rules-index.md` for the full listing of all 182 rules with links to detailed examples.
 
 Priority overview:
 
@@ -83,7 +85,7 @@ Priority overview:
 | 10 | Documentation | MEDIUM | `doc-` | 11 |
 | 11 | Performance Patterns | MEDIUM | `perf-` | 11 |
 | 12 | Project Structure | LOW | `proj-` | 11 |
-| 13 | Clippy & Linting | LOW | `lint-` | 11 |
+| 13 | Clippy & Linting | LOW | `lint-` | 12 |
 | 14 | Anti-patterns | REFERENCE | `anti-` | 15 |
 
 For any rule ID (e.g. `err-anyhow-app`), the full example is at `rules/<rule-id>.md`.

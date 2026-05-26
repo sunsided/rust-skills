@@ -122,7 +122,7 @@ Some style lints may conflict with team preferences:
 
 ```rust
 // If your team prefers explicit returns
-#[allow(clippy::needless_return)]
+#[expect(clippy::needless_return, reason = "team style preference")]
 fn explicit_return() -> i32 {
     return 42;
 }

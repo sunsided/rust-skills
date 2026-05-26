@@ -113,18 +113,21 @@ use std::arch::x86_64::*;
 #[cfg(target_arch = "x86_64")]
 #[target_feature(enable = "avx2")]
 unsafe fn sum_avx2(data: &[f32]) -> f32 {
-    let mut sum = _mm256_setzero_ps();
-    
-    for chunk in data.chunks_exact(8) {
-        let v = _mm256_loadu_ps(chunk.as_ptr());
-        sum = _mm256_add_ps(sum, v);
+    // SAFETY: caller must ensure AVX2 is available (enforced by #[target_feature])
+    unsafe {
+        let mut sum = _mm256_setzero_ps();
+
+        for chunk in data.chunks_exact(8) {
+            let v = _mm256_loadu_ps(chunk.as_ptr());
+            sum = _mm256_add_ps(sum, v);
+        }
+
+        // Horizontal sum
+        let high = _mm256_extractf128_ps(sum, 1);
+        let low = _mm256_castps256_ps128(sum);
+        let sum128 = _mm_add_ps(high, low);
+        // ... continue reduction
     }
-    
-    // Horizontal sum
-    let high = _mm256_extractf128_ps(sum, 1);
-    let low = _mm256_castps256_ps128(sum);
-    let sum128 = _mm_add_ps(high, low);
-    // ... continue reduction
 }
 ```
 
