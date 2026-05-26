@@ -60,10 +60,12 @@ When reviewing or generating code, scan for these patterns immediately - each is
 | `map.get(k); map.insert(k, v)` | `clippy::map_entry` | `perf-entry-api` | Use `map.entry(k).or_insert(v)` |
 | `for i in 0..v.len() { v[i] }` | `clippy::needless_range_loop` | `perf-iter-over-index` | Use `for item in &v` |
 | `collect()` then iterate again | `clippy::needless_collect` | `perf-collect-once` | Chain iterators, skip intermediate collect |
+| `#[async_trait]` on non-dyn trait | - | `async-fn-in-trait` | Use native `async fn` in trait (Rust 1.75+) |
+| `lazy_static! { ... }` | - | `name-consts-screaming` | Use `std::sync::LazyLock` (Rust 1.80+) |
 
 ## Category Reference
 
-Read `references/rules-index.md` for the full listing of all 179 rules with links to detailed examples.
+Read `references/rules-index.md` for the full listing of all 181 rules with links to detailed examples.
 
 Priority overview:
 
@@ -73,7 +75,7 @@ Priority overview:
 | 2 | Error Handling | CRITICAL | `err-` | 12 |
 | 3 | Memory Optimization | CRITICAL | `mem-` | 15 |
 | 4 | API Design | HIGH | `api-` | 15 |
-| 5 | Async/Await | HIGH | `async-` | 15 |
+| 5 | Async/Await | HIGH | `async-` | 17 |
 | 6 | Compiler Optimization | HIGH | `opt-` | 12 |
 | 7 | Naming Conventions | MEDIUM | `name-` | 16 |
 | 8 | Type Safety | MEDIUM | `type-` | 10 |

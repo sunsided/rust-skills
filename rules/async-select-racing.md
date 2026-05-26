@@ -88,22 +88,42 @@ select! {
 
 ## Cancellation Behavior
 
+When one branch wins, `select!` **drops** the other futures immediately. Dropping a future mid-execution discards all state — it does NOT call cleanup code or run to a checkpoint. This is why cancel-safety matters.
+
 ```rust
 async fn select_example() {
     select! {
         _ = operation_a() => {
             println!("A completed first");
-            // operation_b() is dropped/cancelled
+            // operation_b() is dropped — all its state gone
         }
         _ = operation_b() => {
             println!("B completed first");
-            // operation_a() is dropped/cancelled
+            // operation_a() is dropped — all its state gone
         }
     }
 }
+```
 
-// Futures are cancelled at their next .await point
-// For immediate cancellation, futures must be cancel-safe
+A future is **cancel-safe** if dropping it at any `.await` point leaves no
+observable side effects (e.g. `tokio::sync::mpsc::Receiver::recv` is cancel-safe;
+`tokio::io::AsyncReadExt::read_exact` is not, because a partial read is lost).
+
+For operations that must complete or clean up gracefully, use a
+`CancellationToken` instead of relying on drop:
+
+```rust
+use tokio_util::sync::CancellationToken;
+
+async fn safe_worker(token: CancellationToken) {
+    select! {
+        _ = token.cancelled() => {
+            // Clean up here before returning
+            flush_pending().await;
+        }
+        _ = do_work() => {}
+    }
+}
 ```
 
 ## Biased Selection

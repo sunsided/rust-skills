@@ -64,7 +64,7 @@ reorder_imports = true
 |--------|---------|-------------|
 | `max_width` | 100 | Maximum line width |
 | `tab_spaces` | 4 | Spaces per indent |
-| `edition` | "2015" | Rust edition |
+| `edition` | "2024" | Rust edition (set to match your Cargo.toml) |
 | `use_small_heuristics` | "Default" | Layout heuristics |
 | `imports_granularity` | "Preserve" | Import grouping |
 | `group_imports` | "Preserve" | Import ordering |

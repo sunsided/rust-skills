@@ -32,8 +32,7 @@ async fn test_get_user() {
 ## Good
 
 ```rust
-// Define trait for dependency
-#[async_trait]
+// Define trait for dependency — native async fn in traits (Rust 1.75+)
 trait UserRepository: Send + Sync {
     async fn find_by_id(&self, id: u64) -> Result<Option<User>, DbError>;
     async fn save(&self, user: &User) -> Result<(), DbError>;
@@ -44,7 +43,6 @@ struct PostgresUserRepo {
     pool: PgPool,
 }
 
-#[async_trait]
 impl UserRepository for PostgresUserRepo {
     async fn find_by_id(&self, id: u64) -> Result<Option<User>, DbError> {
         sqlx::query_as("SELECT * FROM users WHERE id = $1")
@@ -74,7 +72,6 @@ mod tests {
         users: HashMap<u64, User>,
     }
     
-    #[async_trait]
     impl UserRepository for MockUserRepo {
         async fn find_by_id(&self, id: u64) -> Result<Option<User>, DbError> {
             Ok(self.users.get(&id).cloned())
@@ -111,7 +108,6 @@ use mockall::*;
 use mockall::predicate::*;
 
 #[automock]
-#[async_trait]
 trait Database: Send + Sync {
     async fn query(&self, sql: &str) -> Result<Vec<Row>, Error>;
 }
@@ -133,14 +129,12 @@ async fn test_with_mockall() {
 ## Testing Error Paths
 
 ```rust
-#[async_trait]
 trait HttpClient: Send + Sync {
     async fn get(&self, url: &str) -> Result<Response, HttpError>;
 }
 
 struct FailingClient;
 
-#[async_trait]
 impl HttpClient for FailingClient {
     async fn get(&self, _url: &str) -> Result<Response, HttpError> {
         Err(HttpError::Timeout)  // Always fails
@@ -174,12 +168,15 @@ impl UserService {
 // Slight runtime cost but cleaner API
 ```
 
+> **Note:** `Box<dyn UserRepository>` with `async fn` in traits requires the
+> `async-trait` crate (object safety limitation). Use the generic form above
+> unless dynamic dispatch is required. See [async-fn-in-trait](./async-fn-in-trait.md).
+
 ## Cargo.toml
 
 ```toml
 [dev-dependencies]
-mockall = "0.11"
-async-trait = "0.1"  # For async trait mocking
+mockall = "0.12"
 ```
 
 ## See Also

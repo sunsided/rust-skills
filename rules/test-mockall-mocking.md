@@ -173,8 +173,8 @@ fn mock_client() -> MockHttpClient {
 ## Async Mocking
 
 ```rust
+// Native async fn in traits (Rust 1.75+) — no macro needed
 #[automock]
-#[async_trait]
 trait AsyncDatabase {
     async fn fetch(&self, id: u64) -> Option<Data>;
 }

@@ -127,8 +127,8 @@ async fn test_channel_communication() {
 ```rust
 use mockall::*;
 
+// Native async fn in traits (Rust 1.75+)
 #[automock]
-#[async_trait::async_trait]
 trait Database {
     async fn get_user(&self, id: u64) -> Option<User>;
 }

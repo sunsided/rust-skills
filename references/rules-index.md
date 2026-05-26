@@ -1,6 +1,6 @@
 # Full Rules Index
 
-All 179 rules across 14 categories. Rules link to detailed examples in `../rules/`.
+All 181 rules across 14 categories. Rules link to detailed examples in `../rules/`.
 
 ## 1. Ownership & Borrowing (CRITICAL) — `own-`
 
@@ -85,6 +85,8 @@ All 179 rules across 14 categories. Rules link to detailed examples in `../rules
 - [`async-oneshot-response`](../rules/async-oneshot-response.md) - Use `oneshot` for request/response
 - [`async-joinset-structured`](../rules/async-joinset-structured.md) - Use `JoinSet` for dynamic task groups
 - [`async-clone-before-await`](../rules/async-clone-before-await.md) - Clone data before await, release locks
+- [`async-fn-in-trait`](../rules/async-fn-in-trait.md) - Use native `async fn` in traits; `async-trait` crate only for dyn dispatch
+- [`async-closures`](../rules/async-closures.md) - Use `async || {}` closures (Rust 1.85+), not `|| async {}` workaround
 
 ## 6. Compiler Optimization (HIGH) — `opt-`
 

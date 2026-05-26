@@ -153,6 +153,33 @@ define_id!(CommentId);
 define_id!(TeamId);
 ```
 
+## NonZero IDs (Rust 1.79+)
+
+When an ID is guaranteed non-zero (database auto-increment, UUID), use `NonZeroU64` as
+the inner type. `Option<UserId>` then has the same size as `u64` (null-pointer
+optimization), and the zero value is rejected at construction:
+
+```rust
+use std::num::NonZeroU64;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct UserId(NonZeroU64);
+
+impl UserId {
+    pub fn new(id: u64) -> Option<Self> {
+        NonZeroU64::new(id).map(Self)
+    }
+    pub fn get(self) -> u64 {
+        self.0.get()
+    }
+}
+
+// Option<UserId> is same size as u64 — no wasted byte
+assert_eq!(size_of::<Option<UserId>>(), size_of::<u64>());
+```
+
+Use plain `u64` when zero is a valid ID; use `NonZeroU64` when it isn't.
+
 ## See Also
 
 - [api-newtype-safety](api-newtype-safety.md) - Newtypes for type safety
