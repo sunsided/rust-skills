@@ -7,8 +7,11 @@ description: >
   including seemingly simple tasks like adding a function, implementing a trait,
   or adding error handling. This skill is especially important when you spot
   any of these red flags: .unwrap(), .clone(), &String, &Vec<T>, std::fs in
-  async code, Box<dyn Error>, or format!() in hot paths. Do not skip this skill
-  just because the Rust task seems small or straightforward.
+  async code, Box<dyn Error>, or format!() in hot paths. Also apply when fixing
+  clippy warnings or running cargo clippy - most lints map directly to rules here
+  (clippy::unwrap_used, clippy::ptr_arg, clippy::await_holding_lock,
+  clippy::map_entry, clippy::clone_on_ref_ptr). Do not skip this skill just
+  because the Rust task seems small or straightforward.
 license: MIT
 metadata:
   author: leonardomso
@@ -37,23 +40,26 @@ Start here to pick the right categories for your task:
 | Performance tuning | `opt-`, `mem-`, `perf-` |
 | Code review | `anti-`, `lint-` |
 | New crate or module | `proj-`, `lint-`, `doc-` |
+| Fixing clippy warnings | `lint-`, then the category matching the lint (see Red Flags) |
 
 ## Red Flags: Catch These First
 
 When reviewing or generating code, scan for these patterns immediately - each is a likely rule violation:
 
-| Pattern | Rule | Fix |
-|---------|------|-----|
-| `.unwrap()` in non-test code | `err-no-unwrap-prod` | Use `?` or `.context()` |
-| `.clone()` on a reference | `own-borrow-over-clone` | Pass `&T` or `&str` instead |
-| `fn f(s: &String)` | `own-slice-over-vec` | Change to `fn f(s: &str)` |
-| `fn f(v: &Vec<T>)` | `own-slice-over-vec` | Change to `fn f(v: &[T])` |
-| `std::fs::read` in `async fn` | `async-tokio-fs` | Use `tokio::fs::read` |
-| Lock guard across `.await` | `async-no-lock-await` | Clone data out before awaiting |
-| `Box<dyn std::error::Error>` | `err-custom-type` | Use `thiserror` or `anyhow` |
-| `format!()` just to build a string | `mem-avoid-format` | Use string literals or `write!()` |
-| `vec.push()` in a loop, no capacity | `mem-with-capacity` | Use `Vec::with_capacity(n)` |
-| `map.get(k); map.insert(k, v)` | `perf-entry-api` | Use `map.entry(k).or_insert(v)` |
+| Pattern | Clippy lint | Rule | Fix |
+|---------|-------------|------|-----|
+| `.unwrap()` in non-test code | `clippy::unwrap_used` | `err-no-unwrap-prod` | Use `?` or `.context()` |
+| `.clone()` on a reference | `clippy::clone_on_ref_ptr` | `own-borrow-over-clone` | Pass `&T` or `&str` instead |
+| `fn f(s: &String)` | `clippy::ptr_arg` | `own-slice-over-vec` | Change to `fn f(s: &str)` |
+| `fn f(v: &Vec<T>)` | `clippy::ptr_arg` | `own-slice-over-vec` | Change to `fn f(v: &[T])` |
+| `std::fs::read` in `async fn` | - | `async-tokio-fs` | Use `tokio::fs::read` |
+| Lock guard across `.await` | `clippy::await_holding_lock` | `async-no-lock-await` | Clone data out before awaiting |
+| `Box<dyn std::error::Error>` | - | `err-custom-type` | Use `thiserror` or `anyhow` |
+| `format!()` just to build a string | `clippy::useless_format` | `mem-avoid-format` | Use string literals or `write!()` |
+| `vec.push()` in a loop, no capacity | `clippy::vec_init_then_push` | `mem-with-capacity` | Use `Vec::with_capacity(n)` |
+| `map.get(k); map.insert(k, v)` | `clippy::map_entry` | `perf-entry-api` | Use `map.entry(k).or_insert(v)` |
+| `for i in 0..v.len() { v[i] }` | `clippy::needless_range_loop` | `perf-iter-over-index` | Use `for item in &v` |
+| `collect()` then iterate again | `clippy::needless_collect` | `perf-collect-once` | Chain iterators, skip intermediate collect |
 
 ## Category Reference
 

@@ -7,7 +7,7 @@ Works with Claude Code, Cursor, Windsurf, Copilot, Codex, Aider, Zed, Amp, Cline
 ## Install
 
 ```bash
-npx add-skill leonardomso/rust-skills
+npx add-skill sunsided/rust-skills
 ```
 
 That's it. The CLI figures out which agents you have and installs the skill to the right place.
